@@ -79,8 +79,7 @@ data "aws_acm_certificate" "ssl_certificate" {
 # ---------------------------------------------------------------------------------------------------------------------
 resource "aws_cloudfront_distribution" "website_distribution" {
     enabled = true
-    # TODO: Enable aliases after moving DNS
-    #aliases = ["verify.eximchain.com"]
+    aliases = ["verify.eximchain.com"]
 
     default_root_object = "index.html"
     is_ipv6_enabled     = true
@@ -130,9 +129,7 @@ resource "aws_cloudfront_distribution" "website_distribution" {
     }
 
     viewer_certificate {
-        # TODO: swap to eximchain.com certificate
-        #acm_certificate_arn = "${data.aws_acm_certificate.ssl_certificate.arn}"
-        cloudfront_default_certificate = true
+        acm_certificate_arn = "${data.aws_acm_certificate.ssl_certificate.arn}"
         ssl_support_method  = "sni-only"
     }
 }
